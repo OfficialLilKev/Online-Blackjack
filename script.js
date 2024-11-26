@@ -328,7 +328,10 @@ function endGame() {
 }
 
 // Toggle Action Buttons
+
 function toggleButtons(enable) {
+    document.getElementById("surrender-button").disabled = !enable;
+    
     document.getElementById("hit-button").disabled = !enable;
     document.getElementById("stand-button").disabled = !enable;
     document.getElementById("double-down-button").disabled = !enable;
@@ -349,3 +352,17 @@ function togglePlaceBetButton(enable) {
     document.getElementById("stand-button").addEventListener("click", playerStands);
     document.getElementById("double-down-button").addEventListener("click", doubleDown);
 })();
+
+// Surrender Button Functionality
+function playerSurrenders() {
+    if (gameOver) return;
+
+    // Player forfeits half their bet
+    balance += currentBet / 2;
+    displayMessage("Player Surrendered. Half the bet is returned.");
+    updateBalanceDisplay();
+    endGame();
+}
+
+// Add event listener for the surrender button
+document.getElementById("surrender-button").addEventListener("click", playerSurrenders);
