@@ -32,7 +32,7 @@ This game was designed to provide a fun and educational project for developers t
 ## 📦 Setup and Installation
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/blackjack-game.git
+   git clone https://github.com/BajanVlogs/blackjack-game.git
    ```
 2. Navigate to the project directory:
    ```
