@@ -48,4 +48,3 @@ This game was designed to provide a fun and educational project for developers t
 - **Themes and Customization**: Introduce changable backgrounds to personalize the game.
 - **Enhanced Visuals**: Add animations, transitions, and sound effects for a more immersive experience.
 - **Expanded Splitting Logic**: Support splitting beyond the initial round for hands with matching cards.
-- **Surrender Options**: Further refine and balance the surrender mechanics for strategic gameplay.
