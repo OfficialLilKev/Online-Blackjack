@@ -3,13 +3,15 @@
 Welcome to the **Blackjack Game**, a dynamic and interactive take on the classic casino card game! Whether you're a seasoned player or new to the game, this project delivers an immersive experience with exciting features and a clean, user-friendly interface.
 
 ## 📝 Features
-- **Standard Gameplay Rules**: Hit, Stand, Double Down, and Surrender options.
+- **Standard Gameplay Rules**: Hit, Stand, Double Down, Surrender, and Splitting options.
 - **Real-Time Score Tracking**: Automatically calculates player and dealer hand values.
 - **Bust Logic**: The game stops if you exceed 21 points.
 - **Dealer AI**: Dealer plays by standard rules, hitting until reaching a minimum score of 17.
 - **Interactive UI**: Displays cards dynamically with sleek animations.
 - **Balance Management**: Start with a fixed balance, place bets, and see your winnings grow or shrink.
 - **Responsive Design**: Works seamlessly across devices, from desktops to mobile.
+- **Surrender Option**: Forfeit half your bet and end the round if needed.
+- **Splitting Functionality**: Split your hand into two separate hands when dealt matching cards.
 
 ## 🔧 Technology Stack
 - **HTML5**: Structuring the game layout.
@@ -19,7 +21,7 @@ Welcome to the **Blackjack Game**, a dynamic and interactive take on the classic
 
 ## 🚀 How to Play
 1. **Place Your Bet**: Enter your desired bet amount and click "Place Bet."
-2. **Make Your Move**: Hit, Stand, Double Down, or Surrender based on your strategy.
+2. **Make Your Move**: Hit, Stand, Double Down, Split, or Surrender based on your strategy.
 3. **Beat the Dealer**: Aim to get closer to 21 than the dealer without busting.
 4. **Win or Lose**: Winnings are automatically calculated based on your moves.
 
@@ -41,10 +43,9 @@ This game was designed to provide a fun and educational project for developers t
 3. Open `index.html` in your browser to start playing!
 
 ## 🛠 Future Enhancements
-- Add multiplayer functionality.
-- Implement advanced side bets like **Perfect Pairs** or **21+3**.
-- Introduce themes and customization options.
-- Add sound effects for a more immersive experience.
-
-## 💬 Feedback & Contributions
-Feel free to open issues, suggest improvements, or contribute to the project! Let’s make this Blackjack game even better together.
+- **Multiplayer Functionality**: Enable multiple players to compete at the same table.
+- **Advanced Side Bets**: Implement options like **Perfect Pairs** or **21+3** for additional excitement.
+- **Themes and Customization**: Introduce changable backgrounds to personalize the game.
+- **Enhanced Visuals**: Add animations, transitions, and sound effects for a more immersive experience.
+- **Expanded Splitting Logic**: Support splitting beyond the initial round for hands with matching cards.
+- **Surrender Options**: Further refine and balance the surrender mechanics for strategic gameplay.
