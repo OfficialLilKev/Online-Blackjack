@@ -367,29 +367,235 @@ function playerSurrenders() {
 // Add event listener for the surrender button
 document.getElementById("surrender-button").addEventListener("click", playerSurrenders);
 
-// Flip animation for cards
-function flipCard(cardElement) {
-    cardElement.classList.add('card-flip');
-    setTimeout(() => cardElement.classList.remove('card-flip'), 600);
+// Offer Insurance Option
+function offerInsurance() {
+    if (dealerHand[0].value === 'A' && !gameOver) { // Trigger insurance on visible Ace
+        const insuranceBet = currentBet / 2;
+
+        if (balance < insuranceBet) {
+            alert("Insufficient balance for insurance bet.");
+            return;
+        }
+
+        if (confirm("Dealer shows an Ace! Do you want to place an insurance bet?")) {
+            balance -= insuranceBet;
+            updateBalanceDisplay();
+            revealDealerHiddenCard(); // Reveal the dealer's hidden card after insurance
+    if (calculateScore(dealerHand) === 21) {
+        displayMessage("Dealer has Blackjack! Insurance bet wins.");
+        balance += insuranceBet * 2; // Insurance pays 2:1
+    } else {
+        displayMessage("Dealer does not have Blackjack. Insurance bet lost.");
+    }
+    updateBalanceDisplay();
+        }
+    }
 }
 
-// Apply flip animation during render
-function renderHand(elementId, hand, hideFirstCard) {
-    const container = document.getElementById(elementId);
-    container.innerHTML = "";
+// Check Outcome of Insurance Bet
+function checkInsuranceOutcome(insuranceBet) {
+    if (calculateScore(dealerHand) === 21) {
+        displayMessage("Dealer has Blackjack! Insurance bet wins.");
+        balance += insuranceBet * 2; // Insurance pays 2:1
+    } else {
+        displayMessage("Dealer does not have Blackjack. Insurance bet lost.");
+    }
+    updateBalanceDisplay();
+}
 
-    hand.forEach((card, index) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.classList.add("card");
-        if (hideFirstCard && index === 0) {
-            cardDiv.classList.add("hidden");
-        } else {
-            const img = document.createElement("img");
-            img.src = card.image;
-            img.alt = `${card.value} of ${card.suit}`;
-            cardDiv.appendChild(img);
+// Integrate Insurance Option into Game Flow
+async function startGame() {
+    gameOver = false;
+    resetGameState();
+    toggleButtons(true);
+    togglePlaceBetButton(false);
+
+    playerHand = await drawCards(2);
+    dealerHand = await drawCards(2);
+
+    if (!playerHand.length || !dealerHand.length) return;
+
+    renderHands(false);
+    updateScores();
+    
+    if (dealerHand[0].value === 'A') {
+        offerInsurance(); // Trigger insurance if dealer's visible card is an Ace
+    }
+    
+    checkForInitialBlackjack();
+}
+
+// Reveal Dealer's Hidden Card
+function revealDealerHiddenCard() {
+    renderHands(true); // Reveal the dealer's full hand
+}
+
+// Check Insurance Outcome (Updated to consider only the hidden card)
+function checkInsuranceOutcome(insuranceBet) {
+    if (revealDealerHiddenCardForInsurance() && calculateScore(dealerHand) === 21) {
+        displayMessage("Dealer has Blackjack! Insurance bet wins.");
+        balance += insuranceBet * 2; // Insurance pays 2:1
+    } else {
+        displayMessage("Dealer does not have Blackjack. Insurance bet lost.");
+    }
+    updateBalanceDisplay();
+}
+
+// Display Insurance Buttons
+function showInsuranceButtons() {
+    const insuranceContainer = document.getElementById("insurance-container");
+    insuranceContainer.style.display = "flex";
+}
+
+// Hide Insurance Buttons
+function hideInsuranceButtons() {
+    const insuranceContainer = document.getElementById("insurance-container");
+    insuranceContainer.style.display = "none";
+}
+
+// Handle Insurance Response
+function handleInsuranceResponse(acceptInsurance) {
+    hideInsuranceButtons(); // Hide the buttons
+    if (acceptInsurance) {
+        const insuranceBet = currentBet / 2;
+        if (balance < insuranceBet) {
+            alert("Insufficient balance for insurance bet.");
+            return;
         }
-        container.appendChild(cardDiv);
-        flipCard(cardDiv); // Add animation
-    });
+        balance -= insuranceBet;
+        updateBalanceDisplay();
+        revealDealerHiddenCard(); // Reveal the dealer's hidden card after insurance
+    if (calculateScore(dealerHand) === 21) {
+        displayMessage("Dealer has Blackjack! Insurance bet wins.");
+        balance += insuranceBet * 2; // Insurance pays 2:1
+    } else {
+        displayMessage("Dealer does not have Blackjack. Insurance bet lost.");
+    }
+    updateBalanceDisplay();
+    } else {
+        displayMessage("Player declined insurance.");
+    }
+}
+
+// Offer Insurance Option (Updated to show buttons)
+function offerInsurance() {
+    if (dealerHand[0].value === 'A' && !gameOver) {
+        showInsuranceButtons(); // Show "Yes" and "No" buttons
+    }
+}
+
+// Add Event Listeners for Insurance Buttons
+document.getElementById("yes-insurance").addEventListener("click", () => handleInsuranceResponse(true));
+document.getElementById("no-insurance").addEventListener("click", () => handleInsuranceResponse(false));
+
+// Updated offerInsurance function to directly handle the visible Ace
+function offerInsurance() {
+    if (dealerHand[0].value === 'A') { // Check only the visible card
+        showInsuranceButtons(); // Prompt the player with Yes/No buttons
+    }
+}
+
+// Integrate insurance check into the game flow after the initial deal
+async function startGame() {
+    gameOver = false;
+    resetGameState();
+    toggleButtons(true);
+    togglePlaceBetButton(false);
+
+    playerHand = await drawCards(2);
+    dealerHand = await drawCards(2);
+
+    if (!playerHand.length || !dealerHand.length) return;
+
+    renderHands(false); // Render hands with dealer's second card hidden
+    updateScores();
+    if (dealerHand[0].value === 'A') {
+        offerInsurance(); // Trigger insurance if dealer's up-card is an Ace
+    }
+    checkForInitialBlackjack(); // Check if the game ends due to Blackjack
+}
+
+// Ask for Insurance (Trigger on Dealer's Ace)
+function offerInsurance() {
+    showInsuranceButtons(); // Show Yes/No insurance buttons
+}
+
+// Check the Dealer's Hand for Blackjack (After Player's Decision)
+function checkDealerBlackjackWithInsurance(insuranceBet) {
+    const dealerHasBlackjack =
+        dealerHand[0].value === 'A' && // Visible card is Ace
+        (dealerHand[1].value === '10' || dealerHand[1].value === 'JACK' || dealerHand[1].value === 'QUEEN' || dealerHand[1].value === 'KING');
+
+    revealDealerHand(); // Reveal dealer's full hand
+
+    if (dealerHasBlackjack) {
+        if (insuranceBet > 0) {
+            // Player took insurance and wins the insurance bet
+            displayMessage("Dealer has Blackjack! Insurance bet pays 2:1.");
+            balance += insuranceBet * 2; // Insurance payout
+        } else {
+            // Player did not take insurance and loses the game
+            displayMessage("Dealer has Blackjack! Player loses the bet.");
+        }
+        endGame(); // End the game as dealer has blackjack
+    } else {
+        if (insuranceBet > 0) {
+            displayMessage("Dealer does not have Blackjack. Insurance bet lost.");
+        } else {
+            displayMessage("Dealer does not have Blackjack. Game continues.");
+        }
+        updateBalanceDisplay(); // Update balance
+    }
+}
+
+// Handle Insurance Decision (Yes/No)
+function handleInsuranceResponse(acceptInsurance) {
+    hideInsuranceButtons(); // Hide the insurance buttons
+    const insuranceBet = acceptInsurance ? currentBet / 2 : 0; // Only deduct if player accepts
+
+    if (acceptInsurance && balance < insuranceBet) {
+        alert("Insufficient balance for insurance bet."); // Guard against low balance
+        return;
+    }
+
+    if (insuranceBet > 0) {
+        balance -= insuranceBet; // Deduct insurance bet
+        updateBalanceDisplay();
+    }
+
+    // Check for Blackjack after player's insurance decision
+    checkDealerBlackjackWithInsurance(insuranceBet);
+}
+
+// Integrate Insurance Logic into the Game Start
+async function startGame() {
+    gameOver = false;
+    resetGameState();
+    toggleButtons(true);
+    togglePlaceBetButton(false);
+
+    playerHand = await drawCards(2);
+    dealerHand = await drawCards(2);
+
+    if (!playerHand.length || !dealerHand.length) return;
+
+    renderHands(false); // Render hands with dealer's second card hidden
+    updateScores();
+
+    if (dealerHand[0].value === 'A') {
+        offerInsurance(); // Offer insurance if dealer's up-card is Ace
+    } else {
+        checkForInitialBlackjack(); // Check for blackjack if no Ace is shown
+    }
+}
+
+// Show and Hide Insurance Buttons
+function showInsuranceButtons() {
+    const insuranceContainer = document.getElementById("insurance-container");
+    insuranceContainer.style.display = "flex";
+}
+
+function hideInsuranceButtons() {
+    const insuranceContainer = document.getElementById("insurance-container");
+    insuranceContainer.style.display = "none";
 }
