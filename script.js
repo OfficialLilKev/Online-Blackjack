@@ -366,3 +366,30 @@ function playerSurrenders() {
 
 // Add event listener for the surrender button
 document.getElementById("surrender-button").addEventListener("click", playerSurrenders);
+
+// Flip animation for cards
+function flipCard(cardElement) {
+    cardElement.classList.add('card-flip');
+    setTimeout(() => cardElement.classList.remove('card-flip'), 600);
+}
+
+// Apply flip animation during render
+function renderHand(elementId, hand, hideFirstCard) {
+    const container = document.getElementById(elementId);
+    container.innerHTML = "";
+
+    hand.forEach((card, index) => {
+        const cardDiv = document.createElement("div");
+        cardDiv.classList.add("card");
+        if (hideFirstCard && index === 0) {
+            cardDiv.classList.add("hidden");
+        } else {
+            const img = document.createElement("img");
+            img.src = card.image;
+            img.alt = `${card.value} of ${card.suit}`;
+            cardDiv.appendChild(img);
+        }
+        container.appendChild(cardDiv);
+        flipCard(cardDiv); // Add animation
+    });
+}
