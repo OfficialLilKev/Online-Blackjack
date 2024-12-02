@@ -299,7 +299,8 @@ function calculateScore(hand) {
 
 // Update Balance Display
 function updateBalanceDisplay() {
-    document.getElementById("balance").textContent = balance.toFixed(2);
+    const formattedBalance = balance.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    document.getElementById("balance").textContent = formattedBalance.replace('$', ' ');
 }
 
 // Display Message with Timeout
