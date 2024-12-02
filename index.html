@@ -7,12 +7,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <img src="rebirth.jpg" alt="Rebirth Logo" class="logo">
+            <h1 class="header-title">
+                <span class="text-white">Black</span><span class="text-yellow">jack</span>
+            </h1>
+        </div>
+    </header>
+
     <div class="game-container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="balance-section">
                 <h2>Balance</h2>
-                <div id="balance-display">CA$ <span id="balance">1000.00</span></div>
+                <div id="balance-display">$<span id="balance">1000.00</span></div>
             </div>
             <div class="betting-section">
                 <h3>Bet Amount</h3>
@@ -33,11 +43,10 @@
         <div class="game-area">
             <!-- Dealer Section -->
             <div class="dealer-section">
-<div id="insurance-container" style="display: none; justify-content: center; gap: 10px; margin-top: 10px;">
-    <button id="yes-insurance" class="insurance-button">Yes</button>
-    <button id="no-insurance" class="insurance-button">No</button>
-</div>
-
+                <div id="insurance-container" style="display: none; justify-content: center; gap: 10px; margin-top: 10px;">
+                    <button id="yes-insurance" class="insurance-button">Yes</button>
+                    <button id="no-insurance" class="insurance-button">No</button>
+                </div>
                 <h3>Dealer</h3>
                 <div class="dealer-cards" id="dealer-cards"></div>
             </div>
